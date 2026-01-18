@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Documentation files (exclude from GitHub)
+*.md
+!README.md
