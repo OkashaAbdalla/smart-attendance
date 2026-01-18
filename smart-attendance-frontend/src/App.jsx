@@ -13,7 +13,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context';
 import { Landing, Login, Register, VerifyEmail } from './pages/public';
-import { StudentDashboard } from './pages/student';
+import { StudentDashboard, ActiveSessions, MarkAttendance } from './pages/student';
 import { ROUTES } from './utils/constants';
 
 function App() {
@@ -29,6 +29,8 @@ function App() {
           
           {/* Student Routes - TODO: Add authentication protection */}
           <Route path={ROUTES.STUDENT_DASHBOARD} element={<StudentDashboard />} />
+          <Route path={ROUTES.ACTIVE_SESSIONS} element={<ActiveSessions />} />
+          <Route path={`${ROUTES.MARK_ATTENDANCE}/:sessionId`} element={<MarkAttendance />} />
           
           {/* Catch all - redirect to home */}
           <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
