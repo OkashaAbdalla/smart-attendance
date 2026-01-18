@@ -8,8 +8,8 @@ import { ROUTES } from '../../utils/constants';
 
 const AuthCard = () => {
   return (
-    <div className="bg-white dark:bg-gray-800/50 backdrop-blur-sm border border-gray-300 dark:border-gray-700 rounded-2xl p-8 shadow-2xl transition-all duration-500 hover:shadow-green-500/10 hover:shadow-2xl hover:border-green-500/30 hover:bg-gray-50 dark:hover:bg-gray-800/70 group">
-      <div className="space-y-6">
+    <div className="bg-white dark:bg-gray-800/50 backdrop-blur-sm border border-gray-300 dark:border-gray-700 rounded-2xl p-6 shadow-2xl transition-all duration-500 hover:shadow-green-500/10 hover:shadow-2xl hover:border-green-500/30 hover:bg-gray-50 dark:hover:bg-gray-800/70 group max-w-md mx-auto lg:mx-0">
+      <div className="space-y-5">
         {/* Header */}
         <div className="text-center relative">
           <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/10 to-green-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>

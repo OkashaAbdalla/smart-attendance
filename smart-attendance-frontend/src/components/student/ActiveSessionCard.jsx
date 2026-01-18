@@ -21,8 +21,8 @@ const ActiveSessionCard = ({ session }) => {
   const isExpired = timeRemaining === 'Expired';
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
-      <div className="flex items-start justify-between mb-4">
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 hover:shadow-lg transition-all duration-300">
+      <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{session.courseName}</h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm">{session.courseCode}</p>
@@ -49,7 +49,7 @@ const ActiveSessionCard = ({ session }) => {
 
       <Link
         to={`${ROUTES.MARK_ATTENDANCE}/${session.id}`}
-        className={`block w-full text-center py-3 rounded-lg font-medium transition-all duration-300 ${
+        className={`block w-full text-center py-2.5 rounded-lg font-medium transition-all duration-300 text-sm ${
           isExpired
             ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-500 cursor-not-allowed'
             : 'bg-green-600 text-white hover:bg-green-700 hover:shadow-lg'

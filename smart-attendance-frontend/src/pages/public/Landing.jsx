@@ -20,8 +20,8 @@ const Landing = () => {
       <Navbar />
       
       <div className="flex-1 flex items-center py-8 lg:py-0 overflow-y-auto lg:overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <HeroSection />
             <AuthCard />
           </div>

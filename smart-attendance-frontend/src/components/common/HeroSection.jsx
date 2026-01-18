@@ -5,7 +5,7 @@
 
 const HeroSection = () => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Badge */}
       <div className="inline-flex items-center space-x-2 bg-green-100 dark:bg-green-900/30 border border-green-600 dark:border-green-700 rounded-full px-4 py-2">
         <div className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full animate-pulse"></div>
@@ -14,18 +14,18 @@ const HeroSection = () => {
 
       {/* Heading */}
       <div>
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight">Smart Presence.</h1>
-        <h1 className="text-5xl md:text-6xl font-bold text-green-600 dark:text-green-400 leading-tight">Secure Future.</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white leading-tight">Smart Presence.</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-green-600 dark:text-green-400 leading-tight">Secure Future.</h1>
       </div>
 
       {/* Description */}
-      <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+      <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed max-w-lg">
         Revolutionizing campus attendance at UDS Nyankpala. Our AI-driven face recognition system ensures accuracy, 
         eliminates fraud, and streamlines academic records for the Computer Science Department.
       </p>
 
       {/* Feature Pills */}
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-3">
         {['Biometric Secured', 'UDS Certified', 'Real-time Analytics'].map((feature) => (
           <div key={feature} className="flex items-center space-x-2 text-green-600 dark:text-green-400">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

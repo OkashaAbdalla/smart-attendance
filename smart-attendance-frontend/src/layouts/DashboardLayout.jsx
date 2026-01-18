@@ -43,9 +43,11 @@ const DashboardLayout = ({ children }) => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center py-4 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          {children}
+      <main className="flex-1 py-4 overflow-y-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          <div className="w-full">
+            {children}
+          </div>
         </div>
       </main>
     </div>
