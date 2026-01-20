@@ -32,7 +32,8 @@ const MarkAttendance = () => {
 
   const captureImage = async () => {
     setCapturing(true);
-    // TODO: Capture image from video and send to backend
+    // TODO: Capture image from video and send to backend with sessionId
+    console.log('Marking attendance for session:', sessionId);
     await new Promise(resolve => setTimeout(resolve, 2000));
     navigate(ROUTES.ACTIVE_SESSIONS, { state: { message: 'Attendance marked successfully!' } });
   };

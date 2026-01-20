@@ -17,8 +17,31 @@ const Login = () => {
 
     try {
       // TODO: Replace with real authService.login(formData)
+      // Backend will return: { token, role, user }
       await new Promise(resolve => setTimeout(resolve, 1000));
-      navigate(ROUTES.STUDENT_DASHBOARD);
+      
+      // Mock: For testing, detect role based on email
+      // In production, role comes from backend JWT token
+      let mockRole = 'student'; // default
+      
+      if (formData.email.includes('admin')) {
+        mockRole = 'admin';
+      } else if (formData.email.includes('lecturer') || formData.email.includes('staff')) {
+        mockRole = 'lecturer';
+      }
+      
+      // Set auth data in localStorage
+      localStorage.setItem('auth_token', 'mock_token_12345');
+      localStorage.setItem('user_role', mockRole);
+      
+      // Redirect based on role
+      if (mockRole === 'admin') {
+        navigate(ROUTES.ADMIN_DASHBOARD);
+      } else if (mockRole === 'lecturer') {
+        navigate(ROUTES.LECTURER_DASHBOARD);
+      } else {
+        navigate(ROUTES.STUDENT_DASHBOARD);
+      }
     } catch (err) {
       setError('Invalid email or password');
     } finally {

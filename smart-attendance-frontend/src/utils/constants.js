@@ -42,6 +42,11 @@ export const ROUTES = {
   CREATE_SESSION: '/lecturer/create-session',
   MANAGE_SESSIONS: '/lecturer/sessions',
   VIEW_ATTENDANCE: '/lecturer/attendance',
+  
+  // Admin routes
+  ADMIN_DASHBOARD: '/admin/dashboard',
+  CREATE_LECTURER: '/admin/create-lecturer',
+  MANAGE_LECTURERS: '/admin/lecturers',
 };
 
 // ========================================
@@ -147,6 +152,17 @@ export const FACE_RECOGNITION = {
   IMAGE_QUALITY: 0.9,               // JPEG quality (0-1)
   MAX_IMAGE_SIZE: 5 * 1024 * 1024,  // 5MB max file size
 };
+
+// ========================================
+// LECTURER EMAIL DOMAINS
+// ========================================
+// Valid email domains for lecturer registration
+// Backend will validate these during registration
+export const LECTURER_EMAIL_DOMAINS = [
+  '@uds.edu.gh',              // Main university domain
+  '@lecturer.uds.edu.gh',     // Lecturer-specific domain
+  '@staff.uds.edu.gh',        // Staff domain
+];
 
 // ========================================
 // LOCAL STORAGE KEYS

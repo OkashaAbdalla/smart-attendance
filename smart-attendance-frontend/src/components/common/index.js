@@ -10,6 +10,7 @@ export { default as Footer } from './Footer';
 export { default as FormInput } from './FormInput';
 export { default as AuthLayout } from './AuthLayout';
 export { default as ThemeSwitcher } from './ThemeSwitcher';
+export { default as ProtectedRoute } from './ProtectedRoute';
 
 // TODO: Add other common components as they are implemented
 // export { default as Button } from './Button';
