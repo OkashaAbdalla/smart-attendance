@@ -21,7 +21,13 @@ const CameraPreview = ({ videoRef, cameraActive }) => {
           </div>
         ) : (
           <>
-            <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
+            <video 
+              ref={videoRef} 
+              autoPlay 
+              playsInline 
+              muted
+              className="w-full h-full object-cover" 
+            />
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="relative" style={{ width: '45%', aspectRatio: '3/4' }}>
                 <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-green-400"></div>

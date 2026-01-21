@@ -5,20 +5,28 @@
  */
 
 import { Navigate } from 'react-router-dom';
+import { useAuthContext } from '../../context';
 import { ROUTES } from '../../utils/constants';
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
-  // TODO: Replace with real auth check from AuthContext
-  const isAuthenticated = localStorage.getItem('auth_token');
-  const userRole = localStorage.getItem('user_role'); // TODO: Get from JWT token
+  const { isAuthenticated, user, loading } = useAuthContext();
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to={ROUTES.LOGIN} replace />;
   }
 
-  if (requiredRole && userRole !== requiredRole) {
-    // Redirect to appropriate dashboard based on role
-    const dashboardRoute = userRole === 'lecturer' ? ROUTES.LECTURER_DASHBOARD : ROUTES.STUDENT_DASHBOARD;
+  if (requiredRole && user?.role !== requiredRole) {
+    const dashboardRoute = user?.role === 'lecturer' ? ROUTES.LECTURER_DASHBOARD : 
+                          user?.role === 'admin' ? ROUTES.ADMIN_DASHBOARD : 
+                          ROUTES.STUDENT_DASHBOARD;
     return <Navigate to={dashboardRoute} replace />;
   }
 

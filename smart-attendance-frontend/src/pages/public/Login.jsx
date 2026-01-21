@@ -1,56 +1,55 @@
+/**
+ * Login Page with Toast Notifications
+ */
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthLayout, FormInput } from '../../components/common';
+import { useToast, useAuthContext } from '../../context';
 import { ROUTES } from '../../utils/constants';
+import { validateLoginForm, getRoleRedirectPath } from '../../utils/loginHelpers';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { showToast } = useToast();
+  const { login } = useAuthContext();
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (errors[name]) setErrors({ ...errors, [name]: '' });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    
+    const validationErrors = validateLoginForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      showToast('Please fix the errors in the form', 'error');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      // TODO: Replace with real authService.login(formData)
-      // Backend will return: { token, role, user }
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = login(formData.email, formData.password);
       
-      // Mock: For testing, detect role based on email
-      // In production, role comes from backend JWT token
-      let mockRole = 'student'; // default
-      
-      if (formData.email.includes('admin')) {
-        mockRole = 'admin';
-      } else if (formData.email.includes('lecturer') || formData.email.includes('staff')) {
-        mockRole = 'lecturer';
-      }
-      
-      // Set auth data in localStorage
-      localStorage.setItem('auth_token', 'mock_token_12345');
-      localStorage.setItem('user_role', mockRole);
-      
-      // Redirect based on role
-      if (mockRole === 'admin') {
-        navigate(ROUTES.ADMIN_DASHBOARD);
-      } else if (mockRole === 'lecturer') {
-        navigate(ROUTES.LECTURER_DASHBOARD);
-      } else {
-        navigate(ROUTES.STUDENT_DASHBOARD);
+      if (result.success) {
+        showToast('Login successful! Redirecting...', 'success');
+        
+        setTimeout(() => {
+          navigate(getRoleRedirectPath(result.user.role));
+        }, 1000);
       }
     } catch (err) {
-      setError('Invalid email or password');
+      showToast('Invalid email or password', 'error');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -60,12 +59,6 @@ const Login = () => {
         <p className="text-gray-600 dark:text-gray-400 text-base">Sign in to access your attendance dashboard</p>
       </div>
 
-      {error && (
-        <div className="bg-red-500/10 border border-red-500 text-red-600 dark:text-red-400 px-4 py-3 rounded-lg mb-4">
-          {error}
-        </div>
-      )}
-
       <form onSubmit={handleSubmit} className="space-y-4">
         <FormInput
           label="Email"
@@ -74,6 +67,7 @@ const Login = () => {
           value={formData.email}
           onChange={handleChange}
           placeholder="student@uds.edu.gh"
+          error={errors.email}
           required
         />
 
@@ -84,13 +78,14 @@ const Login = () => {
           value={formData.password}
           onChange={handleChange}
           placeholder="••••••••"
+          error={errors.password}
           required
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-green-700 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition disabled:opacity-50"
+          className="w-full bg-green-700 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>

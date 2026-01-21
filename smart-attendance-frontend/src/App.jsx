@@ -11,7 +11,7 @@
  */
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from './context';
+import { ThemeProvider, ToastProvider, AuthProvider } from './context';
 import { Landing, Login, Register, VerifyEmail } from './pages/public';
 import { StudentDashboard, ActiveSessions, MarkAttendance, AttendanceHistory } from './pages/student';
 import { LecturerDashboard, CreateSession, ManageSessions, ViewAttendance } from './pages/lecturer';
@@ -22,7 +22,9 @@ import { ROUTES, ROLES } from './utils/constants';
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+      <ToastProvider>
+        <AuthProvider>
+          <Router>
         <Routes>
           {/* Public Routes */}
           <Route path={ROUTES.HOME} element={<Landing />} />
@@ -51,6 +53,8 @@ function App() {
           <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
         </Routes>
       </Router>
+        </AuthProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 }

@@ -5,20 +5,20 @@
 
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuthContext } from '../context';
 import { ROUTES, ROLES } from '../utils/constants';
 import ThemeSwitcher from '../components/common/ThemeSwitcher';
 
 const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuthContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
-  // Get user role from localStorage
-  const userRole = localStorage.getItem('user_role') || ROLES.STUDENT;
+  const userRole = user?.role || ROLES.STUDENT;
 
   const handleLogout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_role');
+    logout();
     navigate(ROUTES.HOME);
   };
 

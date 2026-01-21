@@ -1,53 +1,108 @@
 /**
- * useCamera Hook
+ * useCamera Hook - Simplified version
  * Purpose: Custom hook for camera/webcam operations
- * 
- * Features:
- *   - Request camera permission
- *   - Start/stop video stream
- *   - Capture image from video
- *   - Convert to base64 for API submission
- *   - Handle errors (permission denied, no camera)
- * 
- * Browser API: navigator.mediaDevices.getUserMedia
- * 
- * PYTHON INTEGRATION NOTES:
- * - This hook captures the image on frontend
- * - Image is converted to base64 string
- * - Base64 string is sent to backend API
- * - Backend forwards to Python face recognition service
- * - Python service handles:
- *   * Face detection
- *   * Face encoding
- *   * Face matching against stored encodings
- *   * Confidence score calculation
- * - Frontend only displays the result
- * 
- * Returns:
- * {
- *   videoRef: React ref for video element
- *   startCamera: Function to start video stream
- *   stopCamera: Function to stop video stream
- *   captureImage: Function to capture and convert to base64
- *   isStreaming: Boolean indicating if camera is active
- *   error: Error message if any
- * }
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 const useCamera = () => {
-  // TODO: Implement camera access and capture logic
-  // 1. Request camera permission using getUserMedia
-  // 2. Start video stream and attach to videoRef
-  // 3. Provide captureImage function:
-  //    - Draw video frame to canvas
-  //    - Convert canvas to base64
-  //    - TODO: Send to Python face-recognition service via backend API
-  // 4. Handle cleanup (stop stream on unmount)
-  // 5. Handle errors (permission denied, no camera found)
-  
-  return null;
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [error, setError] = useState(null);
+
+  const startCamera = useCallback(async () => {
+    try {
+      setError(null);
+      
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera not supported by your browser');
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+        audio: false,
+      });
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+        
+        // Force state update
+        console.log('Camera started, setting isStreaming to true');
+        setIsStreaming(true);
+      }
+    } catch (err) {
+      console.error('Camera error:', err);
+      
+      if (err.name === 'NotAllowedError') {
+        setError('Camera permission denied');
+      } else if (err.name === 'NotFoundError') {
+        setError('No camera found');
+      } else {
+        setError('Failed to access camera');
+      }
+      
+      setIsStreaming(false);
+    }
+  }, []);
+
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    
+    setIsStreaming(false);
+    setError(null);
+  }, []);
+
+  const captureImage = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      if (!videoRef.current || !isStreaming) {
+        reject(new Error('Camera is not active'));
+        return;
+      }
+
+      try {
+        const canvas = document.createElement('canvas');
+        const video = videoRef.current;
+        
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+        
+        const base64Image = canvas.toDataURL('image/jpeg', 0.9);
+        resolve(base64Image);
+      } catch (err) {
+        reject(new Error('Failed to capture image'));
+      }
+    });
+  }, [isStreaming]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
+
+  return {
+    videoRef,
+    startCamera,
+    stopCamera,
+    captureImage,
+    isStreaming,
+    error,
+  };
 };
 
 export default useCamera;
